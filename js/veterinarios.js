@@ -67,7 +67,7 @@ function editar(index)
 {  
 return function cuandoCliqueo() {
   btnGuardar.innerHTML = 'Editar'
-  $('#exampleModal').modal('toggle');
+  $('#exampleModalCenter').modal('toggle',{backdrop: 'static', keyboard: false});
   indice.value = index;
   const veterinaria = veterinarias[index];
   nombre.value = veterinaria.nombre;

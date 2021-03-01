@@ -1,10 +1,11 @@
+const listaMascotas = document.getElementById('lista-mascota');
 const tipo = document.getElementById('tipo');
 const nombre = document.getElementById('nombre');
 const dueno = document.getElementById('dueno');
 const indice = document.getElementById('indice');
 const form = document.getElementById('form');
 const btnGuardar = document.getElementById('btn-guardar');
-const listaMascotas = document.getElementById('lista-mascota');
+
 let mascotas = [
     {
     tipo: "Gato",
@@ -62,7 +63,7 @@ function editar(index)
 {  
 return function cuandoCliqueo() {
   btnGuardar.innerHTML = 'Editar'
-  $('#exampleModal').modal('toggle');
+  $('#exampleModalCenter').modal('toggle');
   const mascota = mascotas[index];
   nombre.value = mascota.nombre;
   dueno.value = mascota.dueno;
@@ -76,7 +77,7 @@ function restModal(){
   dueno.value = '';
   tipo.value = '';
   indice.value = '';
-  btnGuardar.innerHTML = 'Crear'
+  btnGuardar.innerHTML = 'Guardar'
 }
 
 function eliminar(index){
