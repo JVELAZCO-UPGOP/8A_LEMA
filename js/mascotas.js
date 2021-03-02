@@ -5,6 +5,7 @@ const dueno = document.getElementById('dueno');
 const indice = document.getElementById('indice');
 const form = document.getElementById('form');
 const btnGuardar = document.getElementById('btn-guardar');
+const Title = document.getElementById('exampleModalLongTitle');
 
 let mascotas = [
     {
@@ -63,7 +64,10 @@ function editar(index)
 {  
 return function cuandoCliqueo() {
   btnGuardar.innerHTML = 'Editar'
-  $('#exampleModalCenter').modal('toggle');
+  Title.innerHTML = 'Editar Mascota'
+  $('#exampleModalCenter').modal('toggle',{
+    escapeClose: false,
+    clickClose: false});
   const mascota = mascotas[index];
   nombre.value = mascota.nombre;
   dueno.value = mascota.dueno;
@@ -74,8 +78,8 @@ return function cuandoCliqueo() {
 
 function restModal(){
   nombre.value = '';
-  dueno.value = '';
-  tipo.value = '';
+  dueno.value = 'Dueño';
+  tipo.value = 'Tipo de animal';
   indice.value = '';
   btnGuardar.innerHTML = 'Guardar'
 }

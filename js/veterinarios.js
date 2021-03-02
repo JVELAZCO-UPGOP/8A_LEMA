@@ -6,6 +6,7 @@ const indice = document.getElementById('indice');
 const form = document.getElementById('form');
 const btnGuardar = document.getElementById('btn-guardar');
 const listaVeterinarias = document.getElementById('lista-veterinarias');
+const Title = document.getElementById('exampleModalLongTitle');
 let veterinarias = [
     {
     nombre: "Naryie",
@@ -67,7 +68,9 @@ function editar(index)
 {  
 return function cuandoCliqueo() {
   btnGuardar.innerHTML = 'Editar'
-  $('#exampleModalCenter').modal('toggle',{backdrop: 'static', keyboard: false});
+  Title.innerHTML = 'Editar Veterinaria'
+  $('#exampleModalCenter').modal('toggle',{backdrop: 'static',keyboard: false });
+  $('#exampleModalCenter').modal({backdrop: 'static',keyboard: false });
   indice.value = index;
   const veterinaria = veterinarias[index];
   nombre.value = veterinaria.nombre;
@@ -81,7 +84,7 @@ function restModal(){
     indice.value='';
     nombre.value ='';
     apellido.value='';
-    pais.value='';
+    pais.value='País';
     indentificacion.value='';
   btnGuardar.innerHTML = 'Crear'
 }
