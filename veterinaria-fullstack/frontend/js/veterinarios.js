@@ -1,4 +1,3 @@
-const tipo = document.getElementById('pais');
 const nombre = document.getElementById('nombre');
 const indentificacion = document.getElementById('identificacion');
 const apellido = document.getElementById('apellido');
@@ -7,68 +6,77 @@ const form = document.getElementById('form');
 const btnGuardar = document.getElementById('btn-guardar');
 const listaVeterinarias = document.getElementById('lista-veterinarias');
 const Title = document.getElementById('exampleModalLongTitle');
-let veterinarias = [
-    {
-    nombre: "Naryie",
-    apellido: "Vasquez",
-    pais: "Colombia",
-    indentificacion: "1234567890"
-    },
-    {
-        nombre: "luis",
-        apellido: "Vasquez",
-        pais: "Colombia",
-        indentificacion: "1234567891"
-      }
-];
+const url = 'http://localhost:5000/veterinarias';
+let veterinarias = [];
 
-function listarVeterinarias() {
+async function listarVeterinarias() {
+
+ try{
+const respuesta = await fetch(url);
+const veterinariasDelServer = await respuesta.json();
+ if(Array.isArray(veterinriasDelServer))  {
+   veterinarias = veterinariasDelServer;
+   if(veterinarias.length > 0){
     const htmlVeterinarias = veterinarias.map((veterinaria, index)=>`<tr>
     <th scope="row">${index}</th>
     <td>${veterinaria.indentificacion}</td>
-    <td>${veterinaria.pais}</td>
     <td>${veterinaria.nombre}</td>
-    <td>${veterinaria.apellido}</td>
+    <td>${veterinaria.documento}</td>
     <td>
       <div class="btn-group" role="group" aria-label="Basic example">
         <button type="button" class="btn btn-info editar" ><i class="fas fa-edit"></i></button>
         <button type="button" class="btn btn-danger eliminar"><i class="far fa-trash-alt"></i></button>
       </div>
     </td>
-  </tr>`).join(""); 
+  </tr>`
+    )
+   .join(""); 
 
   listaVeterinarias.innerHTML = htmlVeterinarias;
   Array.from(document.getElementsByClassName('editar')).forEach((botonEditar, index)=>botonEditar.onclick = editar(index));
   Array.from(document.getElementsByClassName('eliminar')).forEach((botonEliminar, index)=>botonEliminar.onclick = eliminar_mostrar(index));
 
+};
+return;
+ }
+ listaVeterinarias.innerHTML = `<tr>
+<td colspan="5" Class="lista-vacia">No hay veterinarias</td>
+</tr>`;
+} catch(error){
+  console.log({error});
+  $(".alert").show();
+}
 }
 
-function enviarDatos(evento) {
+async function enviarDatos(evento) {
   evento.preventDefault();
+  try {
   const datos = {
   nombre: nombre.value,
   apellido: apellido.value,
-  pais: pais.value,
-  indentificacion: indentificacion.value,
+  documento: documento.value,
   };
   const accion = btnGuardar.innerHTML;
-  switch(accion){
-    case 'Editar':
-      veterinarias[indice.value] = datos;
-      break;
-      case 'Eliminar':
-      if(btnGuardar.onclick)
-      {
-        veterinarias = veterinarias.filter((veterinaria, indiceVeterinaria)=>indiceVeterinaria !== index);
-  listarVeterinarias();
-      }
-      break;
-      default:
-        veterinarias.push(datos);
-        break;
+  if (accion === "Editar") {
+    urlEnvio += `/${indice.value}`;
+    method = "PUT";
   }
-    listarVeterinarias();
+  const respuesta = await fetch(urlEnvio, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(datos),
+    mode: "cors",
+  });
+  if (respuesta.ok) {
+  listarVeterinarias();
     restModal();
+  }
+  } catch (error) {
+    console.log({ error });
+    $(".alert").show();
+  }
 }
 
 function editar(index)
@@ -78,12 +86,11 @@ return function cuandoCliqueo() {
   Title.innerHTML = 'Editar Veterinaria'
   $('#exampleModalCenter').modal('toggle',{backdrop: 'static',keyboard: false });
   $('#exampleModalCenter').modal({backdrop: 'static',keyboard: false });
-  indice.value = index;
   const veterinaria = veterinarias[index];
+  indice.value = index;
   nombre.value = veterinaria.nombre;
   apellido.value = veterinaria.apellido;
-  pais.value = veterinaria.pais;
-  indentificacion.value = veterinaria.indentificacion;
+  documento.value = veterinaria.documento;
   }
 }
 
@@ -91,35 +98,26 @@ function restModal(){
     indice.value='';
     nombre.value ='';
     apellido.value='';
-    pais.value='País';
-    indentificacion.value='';
+    documento.value='';
   btnGuardar.innerHTML = 'Crear'
 }
 
-function eliminar(index){
-  return function clickEnEliminar()
-  {
-  veterinarias = veterinarias.filter((veterinaria, indiceVeterinaria)=>indiceVeterinaria !== index);
-  listarVeterinarias();
-  }
-}
-
-
-function eliminar_mostrar(index)
-{  
-return function cuandoCliqueo() {
-  btnGuardar.innerHTML = 'Eliminar'
-  Title.innerHTML = 'Elimnar Veterinaria'
-  $('#exampleModalCenter').modal('toggle',{backdrop: 'static',keyboard: false });
-  $('#exampleModalCenter').modal({backdrop: 'static',keyboard: false });
-  indice.value = index;
-  const veterinaria = veterinarias[index];
-  nombre.value = veterinaria.nombre;
-  apellido.value = veterinaria.apellido;
-  pais.value = veterinaria.pais;
-  indentificacion.value = veterinaria.indentificacion;
-  }
-  
+function eliminar(index) {
+  const urlEnvio = `${url}/${index}`;
+  return async function clickEnEliminar() {
+    try {
+      const respuesta = await fetch(urlEnvio, {
+        method: "DELETE",
+        mode: "cors",
+      });
+      if (respuesta.ok) {
+        listarVeterinarias();
+      }
+    } catch (error) {
+      console.log({ error });
+      $(".alert").show();
+    }
+  };
 }
 
 listarVeterinarias();

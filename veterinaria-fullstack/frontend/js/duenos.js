@@ -1,31 +1,23 @@
-const tipo = document.getElementById('pais');
 const nombre = document.getElementById('nombre');
-const indentificacion = document.getElementById('identificacion');
+const documento = document.getElementById('documento');
 const apellido = document.getElementById('apellido');
 const indice = document.getElementById('indice');
 const form = document.getElementById('form');
 const btnGuardar = document.getElementById('btn-guardar');
 const listaDuenos = document.getElementById('lista-duenos');
-let duenos = [
-    {
-    nombre: "Naryie",
-    apellido: "Vasquez",
-    pais: "Colombia",
-    indentificacion: "1234567890"
-    },
-    {
-        nombre: "luis",
-        apellido: "Vasquez",
-        pais: "Colombia",
-        indentificacion: "1234567891"
-      }
-];
+const url = "htpp://localhost:5000/duenos";
+let duenos = [];
 
-function listarDuenos() {
+async function listarDuenos() {
+  try {
+    const respuesta = await fetch(url);
+    const duenosDelServer = await respuesta.json();
+    if (Array.isArray(duenosDelServer)) {
+      duenos = duenosDelServer;
+    if (duenos.length > 0) {
     const htmlDuenos = duenos.map((dueno, index)=>`<tr>
     <th scope="row">${index}</th>
     <td>${dueno.indentificacion}</td>
-    <td>${dueno.pais}</td>
     <td>${dueno.nombre}</td>
     <td>${dueno.apellido}</td>
     <td>
@@ -41,9 +33,19 @@ function listarDuenos() {
   Array.from(document.getElementsByClassName('eliminar')).forEach((botonEliminar, index)=>botonEliminar.onclick = eliminar(index));
 
 }
-
-function enviarDatos(evento) {
+return;
+    }
+    listaDuenos.innerHTML = `<tr>
+    <td colspan="5" class="lista-vacia">No hay dueñ@s</td>
+  </tr>`;
+  } catch (error) {
+    console.log({ error });
+    $(".alert").show();
+  }
+}
+async function enviarDatos(evento) {
   evento.preventDefault();
+  try {
   const datos = {
   nombre: nombre.value,
   apellido: apellido.value,
@@ -51,18 +53,29 @@ function enviarDatos(evento) {
   indentificacion: indentificacion.value,
   };
   const accion = btnGuardar.innerHTML;
-  switch(accion){
-    case 'Editar':
-      duenos[indice.value] = datos;
-      break;
-      default:
-        duenos.push(datos);
-        break;
+  let urlEnvio = url;
+  let method = "POST";
+  if (accion === "Editar") {
+    urlEnvio += `/${indice.value}`;
+    method = "PUT";
   }
+  const respuesta = await fetch(urlEnvio, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(datos),
+    mode: "cors",
+  });
+  if (respuesta.ok) {
     listarDuenos();
     restModal();
 }
-
+} catch (error) {
+  console.log({ error });
+  $(".alert").show();
+}
+}
 function editar(index)
 {  
 return function cuandoCliqueo() {
@@ -72,8 +85,7 @@ return function cuandoCliqueo() {
   const dueno = duenos[index];
   nombre.value = dueno.nombre;
   apellido.value = dueno.apellido;
-  pais.value = dueno.pais;
-  indentificacion.value = dueno.indentificacion;
+  documento.value = dueno.documento;
   }
 }
 
@@ -81,17 +93,26 @@ function restModal(){
     indice.value='';
     nombre.value ='';
     apellido.value='';
-    pais.value='';
-    indentificacion.value='';
+    documento.value='';
   btnGuardar.innerHTML = 'Crear'
 }
 
-function eliminar(index){
-  return function clickEnEliminar()
-  {
-  duenos = duenos.filter((dueno, indiceDueno)=>indiceDueno !== index);
-  listarDuenos();
-  }
+function eliminar(index) {
+  const urlEnvio = `${url}/${index}`;
+  return async function clickEnEliminar() {
+    try {
+      const respuesta = await fetch(urlEnvio, {
+        method: "DELETE",
+        mode: "cors",
+      });
+      if (respuesta.ok) {
+        listarDuenos();
+      }
+    } catch (error) {
+      console.log({ error });
+      $(".alert").show();
+    }
+  };
 }
 
 listarDuenos();
