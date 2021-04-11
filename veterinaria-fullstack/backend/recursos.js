@@ -1,7 +1,7 @@
 module.exports = { mascotas: [
-    { tipo: "Perro", nombre: "Trosky0", dueno: "Camilo1"},
-    { tipo: "Perro", nombre: "Trosky1", dueno: "Camilo2"},
-    { tipo: "Perro", nombre: "Trosky2", dueno: "Camilo3"},
+    { tipo: "Perro", nombre: "Trosky0", dueno: "luis"},
+    { tipo: "Perro", nombre: "Trosky1", dueno: "Enrique"},
+    { tipo: "Perro", nombre: "Trosky2", dueno: "Eren"},
     ],
     veterinarias: [
         { nombre: "Alexandra", apellido: "Perez", documento: "1234567890"},

@@ -88,7 +88,6 @@ function editar(index)
 {  
 return function cuandoCliqueo() {
   btnGuardar.innerHTML = 'Editar';
-  Title.innerHTML = 'Editar Mascota';
   $('#exampleModalCenter').modal('toggle');
   const mascota = mascotas[index];
   nombre.value = mascota.nombre;

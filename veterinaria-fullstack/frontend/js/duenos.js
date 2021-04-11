@@ -4,6 +4,7 @@ const apellido = document.getElementById('apellido');
 const indice = document.getElementById('indice');
 const form = document.getElementById('form');
 const btnGuardar = document.getElementById('btn-guardar');
+const Title = document.getElementById('exampleModalLongTitle');
 const listaDuenos = document.getElementById('lista-duenos');
 const url = "https://veterinaria-backend-pi.vercel.app/duenos";
 let duenos = [];
@@ -78,6 +79,7 @@ async function enviarDatos(evento) {
 function editar(index) {  
 return function cuandoCliqueo() {
   btnGuardar.innerHTML = 'Editar';
+  Title.innerHTML = 'Editar Dueño';
   $('#exampleModalCenter').modal('toggle');
   const dueno = duenos[index];
   indice.value = index;

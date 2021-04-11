@@ -4,6 +4,7 @@ const apellido = document.getElementById('apellido');
 const indice = document.getElementById('indice');
 const form = document.getElementById('form');
 const btnGuardar = document.getElementById('btn-guardar');
+const Title = document.getElementById('exampleModalLongTitle');
 const listaVeterinarias = document.getElementById('lista-veterinarias');
 const url = "https://veterinaria-backend-pi.vercel.app/veterinarias";
 let veterinarias = [];
@@ -85,9 +86,9 @@ async function enviarDatos(evento) {
 function editar(index)
 {  
 return function cuandoCliqueo() {
-  btnGuardar.innerHTML = 'Editar'
-  $('#exampleModalCenter').modal('toggle',{backdrop: 'static',keyboard: false });
-  $('#exampleModalCenter').modal({backdrop: 'static',keyboard: false });
+  btnGuardar.innerHTML = 'Editar';
+  Title.innerHTML = 'Editar Veterinaria';
+  $('#exampleModalCenter').modal('toggle');
   const veterinaria = veterinarias[index];
   indice.value = index;
   nombre.value = veterinaria.nombre;
@@ -98,9 +99,9 @@ return function cuandoCliqueo() {
 
 function resetModal(){
     indice.value='';
-    nombre.value ='';
-    apellido.value='';
-    documento.value='';
+    nombre.value ='Nombre';
+    apellido.value='Apellido';
+    documento.value='Documento';
   btnGuardar.innerHTML = 'Crear';
 }
 
