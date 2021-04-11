@@ -31,9 +31,10 @@ async function listarConsultas() {
           <td>${consulta.mascota.nombre}</td>
           <td>${consulta.veterinaria.nombre} ${consulta.veterinaria.apellido}</td>
           <td>${consulta.diagnostico}</td>
+          <td>${consulta.historia}</td>
           <td>${consulta.fechaCreacion}</td>
           <td>${consulta.fechaEdicion}</td>
-          
+
           <td>
               <div class="btn-group" role="group" aria-label="Basic example">
                 <button type="button" class="btn btn-info editar"><i class="fas fa-edit"></i></button>

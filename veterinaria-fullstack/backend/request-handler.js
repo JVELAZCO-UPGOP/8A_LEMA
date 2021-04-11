@@ -27,7 +27,7 @@ module.exports = (req, res) => {
     //3.1.2 dar respuesta inmediata cuando el metodo sea options
 
     if(metodo === "options"){
-res.writeHead(200);
+res.writeHead(204);
 res.end();
 return;
     }
@@ -62,7 +62,7 @@ return;
             query,
             metodo,
             headers,
-            payload: buffer
+            payload: buffer,
         };
       
         
@@ -75,7 +75,8 @@ return;
         } else {
             handler = enrutador.noEncontrado;
         }
-       
+        console.log("handler", handler);
+        
     //4. ejecutar handler
   if (typeof handler === "function"){
       handler(data, (statusCode = 200, mensaje) => {

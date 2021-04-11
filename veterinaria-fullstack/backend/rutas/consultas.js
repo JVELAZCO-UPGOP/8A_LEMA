@@ -26,8 +26,8 @@ module.exports = function consultasHandler({
             },
         post: (data, callback) => {
             let nuevaConsulta = data.payload;
-            nuevaconsulta.fechaCreacion = new Date();
-            nuevaconsulta.fechaEdicion = null;
+            nuevaConsulta.fechaCreacion = new Date();
+            nuevaConsulta.fechaEdicion = null;
             consultas = [...consultas,nuevaConsulta];
             callback(201, nuevaConsulta);
         },
@@ -38,7 +38,7 @@ module.exports = function consultasHandler({
                     consultas[data.indice] = {
                     ...data.payload, 
                     fechaCreacion, 
-                    fechaEdicion: new Date() 
+                    fechaEdicion: new Date(), 
                 };
                     return callback(200, consultas[data.indice]);
                 }
@@ -46,7 +46,7 @@ module.exports = function consultasHandler({
                     mensaje: `consulta con indice ${data.indice} no encontrado`,
                 });
             }
-            callback(404, { mensaje: "indice no enviado" });
+            callback(400, { mensaje: "indice no enviado" });
         },
         delete: (data, callback) => {
             if (typeof data.indice !== "undefined") {
@@ -54,13 +54,13 @@ module.exports = function consultasHandler({
                     consultas = consultas.filter(
                         (_consulta, indice) => indice != data.indice
                     );
-                    return callback(204, { mensaje: 'elemento con indice ${data.indice} elimimado' });
+                    return callback(204, { mensaje: `elemento con indice ${data.indice} elimimado`, });
                 }
                 return callback(404, {
                     mensaje: `consulta con indice ${data.indice} no encontrado`,
                 });
             }
-            callback(404, { mensaje: "indice no enviado" });
+            callback(400, { mensaje: "indice no enviado" });
         },
     };
 };

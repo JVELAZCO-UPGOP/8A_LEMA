@@ -41,7 +41,7 @@ Array.from(document.getElementsByClassName('eliminar')).forEach(
 return;
  }
 listaMascotas.innerHTML = `<tr>
-<td colspan="5" Class="lista-vacia">No hay mascotas</td>
+<td colspan="5" class="lista-vacia">No hay mascotas</td>
 </tr>`;
 } catch (error){
   console.log({error});
@@ -91,8 +91,8 @@ return function cuandoCliqueo() {
   $('#exampleModalCenter').modal('toggle');
   const mascota = mascotas[index];
   nombre.value = mascota.nombre;
-  tipo.value = mascota.tipo;
   dueno.value = mascota.dueno;
+  tipo.value = mascota.tipo;
   indice.value = index;
   };
 }

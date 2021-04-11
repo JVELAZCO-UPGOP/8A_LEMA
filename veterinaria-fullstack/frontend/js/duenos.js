@@ -79,7 +79,6 @@ async function enviarDatos(evento) {
 function editar(index) {  
 return function cuandoCliqueo() {
   btnGuardar.innerHTML = 'Editar';
-  Title.innerHTML = 'Editar Dueño';
   $('#exampleModalCenter').modal('toggle');
   const dueno = duenos[index];
   indice.value = index;
