@@ -11,7 +11,8 @@ let consultas = [];
 let mascotas = [];
 let veterinarias = [];
 
-const url = "https://localhost:5000";
+const url = "https://veterinaria-backend-pi.vercel.app";
+
 
 async function listarConsultas() {
   const entidad = "consultas";
@@ -41,10 +42,10 @@ async function listarConsultas() {
         </tr>`
         )
         .join("");
-        listaConsultas.innerHTML = htmlConsultas;
-        Array.from(document.getElementsByClassName("editar")).forEach(
-          (botonEditar, index) => (botonEditar.onclick = editar(index))
-        );
+      listaConsultas.innerHTML = htmlConsultas;
+      Array.from(document.getElementsByClassName("editar")).forEach(
+        (botonEditar, index) => (botonEditar.onclick = editar(index))
+      );
     }
   } catch (error) {
     console.log({ error });

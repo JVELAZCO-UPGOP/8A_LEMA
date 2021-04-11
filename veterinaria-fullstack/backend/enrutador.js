@@ -10,9 +10,9 @@ module.exports = {
     callback(200, {mensaje: "esta es /ruta"});
     },
     mascotas: mascotas(recursos.mascotas), 
-    veterinarias: veterinarias(recursos.veterinaria),
+    veterinarias: veterinarias(recursos.veterinarias),
     duenos: duenos(recursos.duenos),
-    consultas: this.consultas(recursos.consultas),
+    consultas: consultas(recursos),
     noEncontrado: (data,callback) => {
     callback(404, {mensaje: "no encontrado"});
     },

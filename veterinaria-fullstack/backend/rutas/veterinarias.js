@@ -2,15 +2,15 @@ module.exports = function veterinariasHandler(veterinarias) {
     return {
         get: (data, callback) => {
             if (typeof data.indice !== "undefined") {
-                console.log("handler veterinarios", { data });
-                if (veterinarios[data.indice]) {
-                    return callback(200, veterinarios[data.indice]);
+                console.log("handler veterinarias", { data });
+                if (veterinarias[data.indice]) {
+                    return callback(200, veterinarias[data.indice]);
                 }
                 return callback(404, {
-                    mensaje: `veterinario con indice ${data.indice} no encontrado`,
+                    mensaje: `veterinaria con indice ${data.indice} no encontrada`,
                 });
             }
-            callback(200, veterinarios);
+            callback(200, veterinarias);
         },
         post: (data, callback) => {
             veterinarias.push(data.payload);

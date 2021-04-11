@@ -5,7 +5,7 @@ const indice = document.getElementById('indice');
 const form = document.getElementById('form');
 const btnGuardar = document.getElementById('btn-guardar');
 const listaDuenos = document.getElementById('lista-duenos');
-const url = "htpp://localhost:5000/duenos";
+const url = "https://veterinaria-backend-pi.vercel.app/duenos";
 let duenos = [];
 
 async function listarDuenos() {
@@ -14,10 +14,11 @@ async function listarDuenos() {
     const duenosDelServer = await respuesta.json();
     if (Array.isArray(duenosDelServer)) {
       duenos = duenosDelServer;
+    }
     if (duenos.length > 0) {
     const htmlDuenos = duenos.map((dueno, index)=>`<tr>
     <th scope="row">${index}</th>
-    <td>${dueno.indentificacion}</td>
+    <td>${dueno.documento}</td>
     <td>${dueno.nombre}</td>
     <td>${dueno.apellido}</td>
     <td>
@@ -29,10 +30,9 @@ async function listarDuenos() {
   </tr>`).join(""); 
 
   listaDuenos.innerHTML = htmlDuenos;
-  Array.from(document.getElementsByClassName('editar')).forEach((botonEditar, index)=>botonEditar.onclick = editar(index));
-  Array.from(document.getElementsByClassName('eliminar')).forEach((botonEliminar, index)=>botonEliminar.onclick = eliminar(index));
+  Array.from(document.getElementsByClassName('editar')).forEach((botonEditar, index)=>(botonEditar.onclick = editar(index)));
+  Array.from(document.getElementsByClassName('eliminar')).forEach((botonEliminar, index)=>(botonEliminar.onclick = eliminar(index)));
 
-}
 return;
     }
     listaDuenos.innerHTML = `<tr>
@@ -49,13 +49,12 @@ async function enviarDatos(evento) {
   const datos = {
   nombre: nombre.value,
   apellido: apellido.value,
-  pais: pais.value,
-  indentificacion: indentificacion.value,
+  documento: documento.value,
   };
   const accion = btnGuardar.innerHTML;
   let urlEnvio = url;
   let method = "POST";
-  if (accion === "Editar") {
+  if (accion === 'Editar') {
     urlEnvio += `/${indice.value}`;
     method = "PUT";
   }
@@ -69,32 +68,31 @@ async function enviarDatos(evento) {
   });
   if (respuesta.ok) {
     listarDuenos();
-    restModal();
+    resetModal();
 }
 } catch (error) {
   console.log({ error });
   $(".alert").show();
 }
 }
-function editar(index)
-{  
+function editar(index) {  
 return function cuandoCliqueo() {
-  btnGuardar.innerHTML = 'Editar'
-  $('#exampleModal').modal('toggle');
-  indice.value = index;
+  btnGuardar.innerHTML = 'Editar';
+  $('#exampleModalCenter').modal('toggle');
   const dueno = duenos[index];
+  indice.value = index;
   nombre.value = dueno.nombre;
   apellido.value = dueno.apellido;
   documento.value = dueno.documento;
-  }
+  };
 }
 
-function restModal(){
+function resetModal(){
     indice.value='';
-    nombre.value ='';
-    apellido.value='';
-    documento.value='';
-  btnGuardar.innerHTML = 'Crear'
+    nombre.value ='Nombre';
+    apellido.value='Apellido';
+    documento.value='Documento';
+  btnGuardar.innerHTML = 'Crear';
 }
 
 function eliminar(index) {

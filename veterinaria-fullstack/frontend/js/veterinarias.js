@@ -1,12 +1,11 @@
 const nombre = document.getElementById('nombre');
-const indentificacion = document.getElementById('identificacion');
+const indentificacion = document.getElementById('documento');
 const apellido = document.getElementById('apellido');
 const indice = document.getElementById('indice');
 const form = document.getElementById('form');
 const btnGuardar = document.getElementById('btn-guardar');
 const listaVeterinarias = document.getElementById('lista-veterinarias');
-const Title = document.getElementById('exampleModalLongTitle');
-const url = 'http://localhost:5000/veterinarias';
+const url = "https://veterinaria-backend-pi.vercel.app/veterinarias";
 let veterinarias = [];
 
 async function listarVeterinarias() {
@@ -14,14 +13,15 @@ async function listarVeterinarias() {
  try{
 const respuesta = await fetch(url);
 const veterinariasDelServer = await respuesta.json();
- if(Array.isArray(veterinriasDelServer))  {
+ if(Array.isArray(veterinariasDelServer))  {
    veterinarias = veterinariasDelServer;
+ }
    if(veterinarias.length > 0){
     const htmlVeterinarias = veterinarias.map((veterinaria, index)=>`<tr>
     <th scope="row">${index}</th>
-    <td>${veterinaria.indentificacion}</td>
-    <td>${veterinaria.nombre}</td>
     <td>${veterinaria.documento}</td>
+    <td>${veterinaria.nombre}</td>
+    <td>${veterinaria.apellido}</td>
     <td>
       <div class="btn-group" role="group" aria-label="Basic example">
         <button type="button" class="btn btn-info editar" ><i class="fas fa-edit"></i></button>
@@ -33,10 +33,11 @@ const veterinariasDelServer = await respuesta.json();
    .join(""); 
 
   listaVeterinarias.innerHTML = htmlVeterinarias;
-  Array.from(document.getElementsByClassName('editar')).forEach((botonEditar, index)=>botonEditar.onclick = editar(index));
-  Array.from(document.getElementsByClassName('eliminar')).forEach((botonEliminar, index)=>botonEliminar.onclick = eliminar_mostrar(index));
-
-};
+  Array.from(document.getElementsByClassName('editar')).forEach(
+    (botonEditar, index)=>(botonEditar.onclick = editar(index)));
+  Array.from(document.getElementsByClassName('eliminar')).forEach(
+    (botonEliminar, index)=>(botonEliminar.onclick = eliminar(index))
+  );
 return;
  }
  listaVeterinarias.innerHTML = `<tr>
@@ -57,6 +58,8 @@ async function enviarDatos(evento) {
   documento: documento.value,
   };
   const accion = btnGuardar.innerHTML;
+  let urlEnvio = url;
+  let method = "POST";
   if (accion === "Editar") {
     urlEnvio += `/${indice.value}`;
     method = "PUT";
@@ -71,7 +74,7 @@ async function enviarDatos(evento) {
   });
   if (respuesta.ok) {
   listarVeterinarias();
-    restModal();
+    resetModal();
   }
   } catch (error) {
     console.log({ error });
@@ -83,7 +86,6 @@ function editar(index)
 {  
 return function cuandoCliqueo() {
   btnGuardar.innerHTML = 'Editar'
-  Title.innerHTML = 'Editar Veterinaria'
   $('#exampleModalCenter').modal('toggle',{backdrop: 'static',keyboard: false });
   $('#exampleModalCenter').modal({backdrop: 'static',keyboard: false });
   const veterinaria = veterinarias[index];
@@ -91,15 +93,15 @@ return function cuandoCliqueo() {
   nombre.value = veterinaria.nombre;
   apellido.value = veterinaria.apellido;
   documento.value = veterinaria.documento;
-  }
+  };
 }
 
-function restModal(){
+function resetModal(){
     indice.value='';
     nombre.value ='';
     apellido.value='';
     documento.value='';
-  btnGuardar.innerHTML = 'Crear'
+  btnGuardar.innerHTML = 'Crear';
 }
 
 function eliminar(index) {

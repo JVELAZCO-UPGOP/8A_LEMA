@@ -1,4 +1,3 @@
-const listaMascotas = document.getElementById('lista-mascota');
 const tipo = document.getElementById('tipo');
 const nombre = document.getElementById('nombre');
 const dueno = document.getElementById('dueno');
@@ -6,9 +5,9 @@ const indice = document.getElementById('indice');
 const form = document.getElementById('form');
 const btnGuardar = document.getElementById('btn-guardar');
 const Title = document.getElementById('exampleModalLongTitle');
-const url = "http:/localhost:5000/mascotas";
-let mascotas = [
-];
+const listaMascotas = document.getElementById('lista-mascota');
+const url = "https://veterinaria-backend-pi.vercel.app/mascotas";
+let mascotas = [];
 
 async function listarMascotas() {
 
@@ -33,8 +32,12 @@ const mascotasDelServer = await respuesta.json();
 </tr>`).join(""); 
 
 listaMascotas.innerHTML = htmlMascotas;
-Array.from(document.getElementsByClassName('editar')).forEach((botonEditar, index)=>botonEditar.onclick = editar(index));
-Array.from(document.getElementsByClassName('eliminar')).forEach((botonEliminar, index)=>botonEliminar.onclick = eliminar(index));
+Array.from(document.getElementsByClassName('editar')).forEach(
+  (botonEditar, index)=>(botonEditar.onclick = editar(index))
+  );
+Array.from(document.getElementsByClassName('eliminar')).forEach(
+  (botonEliminar, index)=>(botonEliminar.onclick = eliminar(index))
+  );
 return;
  }
 listaMascotas.innerHTML = `<tr>
@@ -43,7 +46,7 @@ listaMascotas.innerHTML = `<tr>
 } catch (error){
   console.log({error});
 $(".alert").show();
-}
+  }
 }  
 
 async function enviarDatos(evento) {
@@ -53,7 +56,7 @@ try{
   const datos = {
     tipo: tipo.value,
     nombre: nombre.value,
-    dueno: dueno.value
+    dueno: dueno.value,
     };
     let method = "POST";
     let urlEnvio = url;
@@ -61,17 +64,18 @@ try{
     if(accion === 'Editar'){
         method = "PUT";
         mascotas[indice.value] = datos;
-        urlEnvio = `${url}/indice.value`
+        urlEnvio = `${url}/${indice.value}`;
     }
   const respuesta = await fetch(urlEnvio,{
     method,headers:{
       "Content-Type": "application/json",
     },
     body: JSON.stringify(datos),
-  })
+    mode: "cors",
+  });
   if(respuesta.ok){
       listarMascotas();
-      restModal();
+      resetModal();
     }
   
 }catch (error){
@@ -83,39 +87,37 @@ $(".alert").show();
 function editar(index)
 {  
 return function cuandoCliqueo() {
-  btnGuardar.innerHTML = 'Editar'
-  Title.innerHTML = 'Editar Mascota'
-  $('#exampleModalCenter').modal('toggle',{
-    escapeClose: false,
-    clickClose: false});
+  btnGuardar.innerHTML = 'Editar';
+  Title.innerHTML = 'Editar Mascota';
+  $('#exampleModalCenter').modal('toggle');
   const mascota = mascotas[index];
   nombre.value = mascota.nombre;
-  dueno.value = mascota.dueno;
   tipo.value = mascota.tipo;
+  dueno.value = mascota.dueno;
   indice.value = index;
-  }
+  };
 }
 
-function restModal(){
-  nombre.value = '';
+function resetModal(){
+  nombre.value = 'Nombre';
   dueno.value = 'Dueño';
   tipo.value = 'Tipo de animal';
   indice.value = '';
-  btnGuardar.innerHTML = 'Guardar'
+  btnGuardar.innerHTML = 'Crear';
 }
 
 function eliminar(index){
+  const urlEnvio = `${url}/${index}`;
   return async function clickEnEliminar()
   {
     try{
 
-    const urlEnvio = `${url}/${index}`;
     const respuesta = await fetch(urlEnvio,{
       method: "DELETE",
     });
     if(respuesta.ok){
         listarMascotas();
-        restModal();
+        resetModal();
       }
     }catch (error){
       console.log({error});

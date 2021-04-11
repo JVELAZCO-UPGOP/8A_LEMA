@@ -1,7 +1,7 @@
 module.exports = { mascotas: [
-    { tipo: "Perro", nombre: "Trosky0", dueno: "Camilo"},
-    { tipo: "Perro", nombre: "Trosky1", dueno: "Camilo"},
-    { tipo: "Perro", nombre: "Trosky2", dueno: "Camilo"}
+    { tipo: "Perro", nombre: "Trosky0", dueno: "Camilo1"},
+    { tipo: "Perro", nombre: "Trosky1", dueno: "Camilo2"},
+    { tipo: "Perro", nombre: "Trosky2", dueno: "Camilo3"},
     ],
     veterinarias: [
         { nombre: "Alexandra", apellido: "Perez", documento: "1234567890"},
@@ -14,5 +14,5 @@ module.exports = { mascotas: [
         { nombre: "Enrique", apellido: "Avila", documento: "1234566670"},
     ],
     consultas: [
-{mascota: 0, veterinaria: 0, encabezado: "", fechaCreacion: new Date(), fechaEdicion: new Date(), historia: "", diagnostico: ""}],
+{mascota: 0, veterinaria: 0, encabezado: "", fechaCreacion: new Date(), fechaEdicion: new Date(), historia: "", diagnostico: "diagnostico"},],
     };
